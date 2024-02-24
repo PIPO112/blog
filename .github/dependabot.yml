@@ -1,38 +1,11 @@
-stages:
-  - build
-  - deploy
- 
-variables:
-  NODE_VERSION: "18.14"
- 
-build:
-  stage: build
-  rules:
-    - if: '$CI_COMMIT_REF_NAME == "v4"'
-  before_script:
-    - apt-get update -q && apt-get install -y nodejs npm
-    - npm install -g n
-    - n $NODE_VERSION
-    - hash -r
-    - npm ci
-  script:
-    - npx quartz build
-  artifacts:
-    paths:
-      - public
-  cache:
-    paths:
-      - ~/.npm/
-    key: "${CI_COMMIT_REF_SLUG}-node-${CI_COMMIT_REF_NAME}"
-  tags:
-    - docker
- 
-pages:
-  stage: deploy
-  rules:
-    - if: '$CI_COMMIT_REF_NAME == "v4"'
-  script:
-    - echo "Deploying to GitLab Pages..."
-  artifacts:
-    paths:
-      - public
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
